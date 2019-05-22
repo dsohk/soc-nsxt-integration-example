@@ -1,0 +1,115 @@
+#
+# (c) Copyright 2015-2016 Hewlett Packard Enterprise Development LP
+# (c) Copyright 2018 SUSE LLC
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+---
+  product:
+    version: 2
+
+  baremetal:
+    # NOTE: These values need to be changed to match your environment.
+    # Define the network range that contains the ip-addr values for
+    # the individual servers listed below.
+    subnet: 172.23.126.0
+    netmask: 255.255.255.0
+
+  servers:
+    # NOTE: Addresses of servers need to be changed to match your environment.
+    #
+    #       Add additional servers as required
+    #
+
+
+    - id: deployer
+      ip-addr: 172.23.126.100
+      role: DEPLOYER-ROLE
+      server-group: RACK1
+      nic-mapping: CONTROLLER-SERVER
+      mac-addr: "18:8b:9d:a4:0b:26"
+      ilo-ip: 172.23.1.78
+      ilo-password: passwd
+      ilo-user: admin
+      hostname: susetest-admin01
+
+    # Compute Nodes
+    - id: compute1
+      ip-addr: 172.23.126.101
+      role: COMPUTE-ROLE
+      server-group: RACK1
+      nic-mapping: COMPUTE-SERVER-10g
+      mac-addr: "58:97:bd:8f:a0:ca"
+      ilo-ip: 172.23.1.77
+      ilo-password: passwd
+      ilo-user: admin
+      hostname: susetest-compute01
+
+    - id: compute2
+      ip-addr: 172.23.126.102
+      role: COMPUTE-ROLE
+      server-group: RACK1
+      nic-mapping: COMPUTE-SERVER-10g
+      mac-addr: "58:97:bd:05:f2:06"
+      ilo-ip: 172.23.1.79
+      ilo-password: passwd
+      ilo-user: admin
+      hostname: susetest-compute02
+
+#    - id: compute3
+#      ip-addr: 172.23.126.103
+#      role: COMPUTE-ROLE
+#      server-group: RACK1
+#      nic-mapping: COMPUTE-SERVER
+#      mac-addr: "58:97:bd:8f:ad:47"
+#      ilo-ip: 172.23.1.80
+#      ilo-password: passwd
+#      ilo-user: admin
+#      hostname: susetest-compute03
+
+    # Controllers
+    - id: controller1
+      ip-addr: 172.23.126.104
+      role: CONTROLLER-ROLE
+      server-group: RACK1
+      nic-mapping: CONTROLLER-SERVER
+      mac-addr: "18:8b:9d:a3:17:2a"
+      ilo-ip: 172.23.1.81
+      ilo-password: passwd
+      ilo-user: admin
+      hostname: susetest-controller01
+
+
+
+    - id: controller2
+      ip-addr: 172.23.126.105
+      role: CONTROLLER-ROLE
+      server-group: RACK2
+      nic-mapping: CONTROLLER-SERVER
+      mac-addr: "58:97:bd:8f:a8:42"
+      ilo-ip: 172.23.1.82
+      ilo-password: passwd
+      ilo-user: admin
+      hostname: susetest-controller02
+
+
+    - id: controller3
+      ip-addr: 172.23.126.106
+      role: CONTROLLER-ROLE
+      server-group: RACK3
+      nic-mapping: CONTROLLER-SERVER
+      mac-addr: "58:97:bd:8f:a2:54"
+      ilo-ip: 172.23.1.83
+      ilo-password: passwd
+      ilo-user: admin
+      hostname: susetest-controller03
