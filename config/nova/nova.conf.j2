@@ -156,7 +156,7 @@ project_name = {{ neutron_admin_project_name }}
 username = {{ neutron_admin_username }}
 project_domain_name = {{ neutron_domain_name }}
 user_domain_name = {{ neutron_domain_name }}
-metadata_proxy_shared_secret = {{ neutron_metadata_proxy_shared_secret }}
+metadata_proxy_shared_secret=soc9nsxt
 neutron_auth_strategy = keystone
 cafile = {{ ca_certs_file }}
 service_metadata_proxy = True
@@ -164,6 +164,7 @@ endpoint_override = {{ neutron_url }}
 timeout = 300
 region_name = {{ neutron_region_name }}
 default_floating_pool = {{ default_floating_pool }}
+ovs_bridge = nsx-managed
 
 [notifications]
 notify_api_faults = True

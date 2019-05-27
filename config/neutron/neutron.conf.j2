@@ -31,8 +31,10 @@ log_dir = /var/log/neutron
 bind_host = {{ neutron_bind_host }}
 bind_port = 9696
 {% endif %}
-core_plugin = {{ neutron_core_plugin }}
-service_plugins = {{ neutron_service_plugins }}
+core_plugin = vmware_nsx.plugin.NsxV3Plugin
+# service_plugins = {{ neutron_service_plugins }}
+#service_plugins = vmware_nsx_lbaasv2,vmware_nsx_vpnaas,neutron_fwaas.services.firewall.fwaas_plugin_v2.FirewallPluginV2
+service_plugins = neutron_fwaas.services.firewall.fwaas_plugin_v2.FirewallPluginV2
 api_paste_config = api-paste.ini
 auth_strategy = keystone
 dhcp_lease_duration = 172800
@@ -52,6 +54,10 @@ dns_domain = {{ dns_domain }}
 transport_url = {{ neutron_transport_url }}
 {{ neutron_api_extensions_path|trim }}
 {{ neutron_external_dns_driver|trim }}
+notify_nova_on_port_status_changes = True
+notify_nova_on_port_data_changes = True
+dhcp_agent_notification = False
+nsx_extension_drivers = "vmware_nsxv3_dns"
 
 # Uncomment the line below if the Reference Pluggable IPAM driver is to be used
 # ipam_driver = internal
@@ -155,13 +161,15 @@ region_name = {{ neutron_nova_region_name }}
 cafile = {{ neutron_cacert_file }}
 
 [service_providers]
-{{ neutron_lbaas_providers }}
-service_provider = VPN:strongswan:neutron_vpnaas.services.vpn.service_drivers.ipsec.IPsecVPNDriver:default
-service_provider = FIREWALL:Iptables:neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver:default
+#service_provider = VPN:strongswan:neutron_vpnaas.services.vpn.service_drivers.ipsec.IPsecVPNDriver:default
+#service_provider = FIREWALL:Iptables:neutron.agent.linux.iptables_firewall.OVSHybridIptablesFirewallDriver:default
+#service_provider = LOADBALANCERV2:VMWareEdge:neutron_lbaas.drivers.vmware.edge_driver_v2.EdgeLoadBalancerDriverV2:default
+#service_provider = VPN:vmware:vmware_nsx.services.vpnaas.nsxv3.ipsec_driver.NSXv3IPsecVpnDriver:default
+service_provider = FIREWALL_V2:fwaas_db:neutron_fwaas.services.firewall.service_drivers.agents.agents.FirewallAgentDriver:default
 
-[octavia]
-base_url = {{ octavia_api_uri }}
-request_poll_timeout = 3000
+#[octavia]
+#base_url = {{ octavia_api_uri }}
+#request_poll_timeout = 3000
 
 [service_auth]
 auth_url = {{ neutron_auth_uri }}/v3
@@ -180,12 +188,26 @@ endpoint_type = internal
 {% endfor %}
 
 
-{% if 'fwaas' in neutron_service_plugins %}
-{% include 'fwaas_plugin.j2' %}
-{% endif %}
-
+#{% if 'fwaas' in neutron_service_plugins %}
+#{% include 'fwaas_plugin.j2' %}
+#{% endif %}
+[fwaas]
+enabled = True
+driver = vmware_nsxv3_edge_v2
 
 # Add additional options here
 
 
 # Do not add anything after this line
+
+[nsx_v3]
+nsx_api_managers = "https://172.23.102.40"
+nsx_api_user = "admin"
+nsx_api_password = "*******"
+default_overlay_tz = "5c4e05f9-8cbc-4afc-8331-646a298bef9a"
+default_tier0_router = "4028c21c-99c5-423d-9b1f-3d5c701606ba"
+native_dhcp_metadata = "True"
+metadata_proxy = "b33e0ad0-69c0-4562-bacd-27e038378d1c"
+dhcp_profile = "be56e568-beb0-4795-b0f8-7377a34e07a1"
+default_edge_cluster = "86ee32b7-faa6-4845-86c5-5e96c8d4895a"
+insecure="True"
